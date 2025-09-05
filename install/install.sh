@@ -32,8 +32,7 @@ if [ -f "$NAVIO2_KERNEL_INSTALL_FLAG" ]; then
     for step in "$MAIN_SCRIPTS_DIR"/2[0-9][0-9]_*.sh; do 
         run_step "$step"
     done 
-
-if [ -f "$FILESYSTEM_EXPANSION_FLAG" ]; then 
+elif [ -f "$FILESYSTEM_EXPANSION_FLAG" ]; then 
     log "post-filesystem expansion reboot tasks starting..."
 
     for step in "$MAIN_SCRIPTS_DIR"/1[0-9][0-9]_*.sh; do 
