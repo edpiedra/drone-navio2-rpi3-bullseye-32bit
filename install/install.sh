@@ -13,6 +13,14 @@ run_step() {
     bash "$step"
 }
 
+if [[ "${1:-}" == "--reinstall" ]]; then 
+    log "reinstalling all packages..."
+
+    if [ -d "$LOG_DIR" ]; then 
+        rm -rf "$LOG_DIR"
+    fi 
+fi 
+
 if [ ! -d "$LOG_DIR" ]; then 
     mkdir "$LOG_DIR"
 fi 

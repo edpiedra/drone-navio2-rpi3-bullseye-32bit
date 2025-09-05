@@ -41,7 +41,7 @@ sudo apt install -y -qq git bc bison flex libssl-dev make libc6-dev libncurses5-
 
 log "clone the kernel source..."
 cd $USER_DIR
-git clone --recursive -b $KERNEL_BRANCH $KERNEL_REPO
+git clone --depth=1 -b $KERNEL_BRANCH $KERNEL_REPO
 cd $KERNEL_FOLDER 
 
 log "preparing kernel configuration..."
