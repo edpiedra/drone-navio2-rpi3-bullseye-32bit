@@ -33,7 +33,7 @@ comment_line() {
   fi
 }
 
-require_root()
+require_root
 
 log "install build dependencies..."
 sudo apt install -y -qq git bc bison flex libssl-dev make libc6-dev libncurses5-dev \
