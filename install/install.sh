@@ -10,7 +10,7 @@ source "$MAIN_SCRIPTS_DIR/00_lib.sh"
 run_step() {
     local step="$1"
     log "running $step..."
-    sudo bash "$step"
+    bash "$step"
 }
 
 require_root(){
