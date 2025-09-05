@@ -13,15 +13,6 @@ run_step() {
     bash "$step"
 }
 
-require_root(){
-  if [[ $EUID -ne 0 ]]; then
-    echo "please run $SCRIPT_NAME with sudo." >&2
-    exit 1
-  fi
-}
-
-require_root()
-
 if [ ! -d "$LOG_DIR" ]; then 
     mkdir "$LOG_DIR"
 fi 

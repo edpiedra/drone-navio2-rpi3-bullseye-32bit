@@ -8,4 +8,10 @@ log() {
     printf "\n${formatted_message}\n" | tee -a "$LOG_FILE"
  }
 
- 
+ require_root(){
+  if [[ $EUID -ne 0 ]]; then
+    echo "please run $SCRIPT_NAME with sudo." >&2
+    exit 1
+  fi
+}
+
