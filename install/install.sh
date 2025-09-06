@@ -25,7 +25,19 @@ if [ ! -d "$LOG_DIR" ]; then
     mkdir "$LOG_DIR"
 fi 
 
-if [ -f "$NAVIO2_KERNEL_INSTALL_FLAG" ]; then 
+if [ -f "$NAVIO2_RCIO_INSTALL_FLAG" ]; then 
+    log "post-rcio install reboot tasks starting..."
+
+    for step in "$MAIN_SCRIPTS_DIR"/3[0-9][0-9]_*.sh; do 
+        run_step "$step"
+    done
+elif [ -f "$NAVIO2_HEADERS_INSTALL_FLAG" ]; then 
+    log "post-kernel headers install reboot tasks starting..."
+
+    for step in "$MAIN_SCRIPTS_DIR"/3[0-9][0-9]_*.sh; do 
+        run_step "$step"
+    done
+elif [ -f "$NAVIO2_KERNEL_INSTALL_FLAG" ]; then 
     log "post-kernel install reboot tasks starting..."
 
     for step in "$MAIN_SCRIPTS_DIR"/2[0-9][0-9]_*.sh; do 

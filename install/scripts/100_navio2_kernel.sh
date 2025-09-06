@@ -12,6 +12,11 @@ if [ -f "$NAVIO2_KERNEL_INSTALL_FLAG" ]; then
     exit 0
 fi 
 
+log "install build dependencies..."
+sudo apt install -y -qq git bc bison flex libssl-dev make libc6-dev libncurses5-dev \
+  crossbuild-essential-armhf fakeroot rsync kmod cpio
+
+
 sudo bash $MAIN_SCRIPTS_DIR/900_navio2_kernel.sh
 
 touch $NAVIO2_KERNEL_INSTALL_FLAG

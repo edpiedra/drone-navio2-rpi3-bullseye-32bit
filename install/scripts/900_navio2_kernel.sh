@@ -10,6 +10,20 @@ KERNEL_BRANCH="rpi-5.10.11-navio"
 KERNEL_REPO="https://github.com/emlid/linux-rt-rpi.git"
 KERNEL_FOLDER="linux-rt-rpi"
 
+uncomment_line() {
+  local key="$1" value="$2"
+  local line="${key}=${value}"
+
+  # Check if a commented version exists
+  if grep -q -E "^#${line}$" "$BOOT_CONF"; then
+    # Uncomment the line
+    sed -i "s|^#${line}$|${line}|" "$BOOT_CONF"
+    log "uncommented: ${line}"
+  else
+    log "not found or already uncommented: ${line}"
+  fi
+}
+
 ensure_line(){
   local key="$1" value="$2"
   if ! grep -q -E "^${key}=${value}$" "$BOOT_CONF"; then
@@ -35,11 +49,11 @@ comment_line() {
 
 require_root
 
-log "install build dependencies..."
-sudo apt install -y -qq git bc bison flex libssl-dev make libc6-dev libncurses5-dev \
-  crossbuild-essential-armhf fakeroot rsync kmod cpio
-
 log "clone the kernel source..."
+if [ -d $USER_DIR/$KERNEL_FOLDER ]; then 
+    rm -rf $USER_DIR/$KERNEL_FOLDER
+fi 
+
 cd $USER_DIR
 git clone --depth=1 -b $KERNEL_BRANCH $KERNEL_REPO
 cd $KERNEL_FOLDER 
@@ -72,6 +86,19 @@ STAMP="$(date +%Y%m%d-%H%M%S)"
 BACKUP="$BOOT_CONF.bak-${STAMP}"
 cp -a "$BOOT_CONF" "$BACKUP"
 
-ensure_line "enable_uart" "1"
-ensure_line "dtoverlay" "navio2"
-comment_line "dtoverlay" "vc4-fkms-v3d"
+declare -A settings=(
+    [enable_uart]=1
+    [dtoverlay]=pi3-disable-bt
+    [dtparam]=spi=on
+    [dtparam]=i2c_arm=on
+    [dtoverlay]=navio2
+    [dtoverlay]=rcio
+)
+
+for key in "${!settings[@]}"; do
+  value="${settings[$key]}"
+  uncomment_line "$key" "$value"
+  ensure_line "$key" "$value"
+done
+
+comment_line "dtoverlay" "vc4-kms-v3d"
